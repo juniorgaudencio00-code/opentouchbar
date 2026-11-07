@@ -1,0 +1,50 @@
+name: OpentouchBar
+options:
+  bundleIdPrefix: app.opentouchbar
+  deploymentTarget:
+    macOS: "13.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_IDENTITY: "-"
+    ENABLE_HARDENED_RUNTIME: NO
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+targets:
+  OpentouchBar:
+    type: application
+    platform: macOS
+    sources:
+      - Sources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.opentouchbar
+    info:
+      path: Sources/Info.plist
+      properties:
+        CFBundleName: OpentouchBar
+        CFBundleDisplayName: OpentouchBar
+        LSUIElement: true
+        NSPrincipalClass: NSApplication
+  OpentouchBarTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: OpentouchBar
+schemes:
+  OpentouchBar:
+    build:
+      targets:
+        OpentouchBar: all
+        OpentouchBarTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - OpentouchBarTests
