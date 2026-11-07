@@ -37,6 +37,12 @@ final class ConfigStore {
         return try OTBConfig.from(toml)
     }
 
+    /// Save do editor visual — escreve o TOML; o watcher dispara o hot-reload.
+    func save(_ cfg: OTBConfig) throws {
+        try cfg.toTOML().write(toFile: path, atomically: true, encoding: .utf8)
+        current = cfg
+    }
+
     /// Token vazio/"change-me" → gera, persiste no TOML e usa.
     private func persistTokenIfGenerated() throws {
         let needsToken = current.server.token.isEmpty || current.server.token == "change-me"

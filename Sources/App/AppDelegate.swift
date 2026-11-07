@@ -11,6 +11,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     var virtualBar: VirtualBarWindow?
     var mcpServer: MCPServer?
     var hotkeyEngine = HotkeyEngine()
+    var settingsWindow: SettingsWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem.button?.title = "⚡️"
@@ -49,6 +50,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 self.mcpServer?.reloadConfig(cfg)
                 self.rebuildMenu()
             }
+            settingsWindow = SettingsWindowController(configStore: store, engine: eng)
         } catch {
             NSLog("OpentouchBar bootstrap falhou: \(error)")
         }
@@ -60,8 +62,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let barTitle = (virtualBar?.isVisible == true) ? "Esconder barra virtual" : "Mostrar barra virtual"
         menu.addItem(withTitle: barTitle, action: #selector(toggleBar), keyEquivalent: "")
 
-        let configItem = menu.addItem(withTitle: "Editar config.toml", action: #selector(editConfig), keyEquivalent: ",")
+        let configItem = menu.addItem(withTitle: "Editor visual", action: #selector(showEditor), keyEquivalent: "e")
         configItem.keyEquivalentModifierMask = [.command]
+
+        let rawConfigItem = menu.addItem(withTitle: "Abrir config.toml", action: #selector(editConfig), keyEquivalent: "")
+        rawConfigItem.isEnabled = true
 
         let loginTitle = (SMAppService.mainApp.status == .enabled) ? "✓ Iniciar com o login" : "Iniciar com o login"
         menu.addItem(withTitle: loginTitle, action: #selector(toggleLogin), keyEquivalent: "")
@@ -91,6 +96,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let bar = virtualBar else { return }
         bar.isVisible ? bar.orderOut(nil) : bar.showAndCenter()
         rebuildMenu()
+    }
+
+    @objc func showEditor() {
+        settingsWindow?.show()
     }
 
     @objc func editConfig() {
