@@ -1,0 +1,35 @@
+# OpentouchBar — exemplo de config. Copie para ~/.config/opentouchbar/config.toml
+# Salvar atualiza a barra na hora (hot-reload).
+
+[server]
+port = 64833
+token = "change-me"   # vazio/"change-me" = o app gera um token e grava aqui
+
+# Action types: shell (command) | applescript (source) | js (source) | url (url)
+
+[[buttons]]
+label = "Ping"
+emoji = "📡"
+[buttons.action]
+type = "shell"
+command = "echo opentouchbar ok"
+
+[[buttons]]
+label = "GitHub"
+emoji = "🐙"
+[buttons.action]
+type = "url"
+url = "https://github.com"
+
+[[buttons]]
+label = "Screenshot"
+emoji = "📸"
+[buttons.action]
+type = "shell"
+command = "screencapture -c && echo capturado para o clipboard"
+
+# [[triggers]]
+# hotkey = "cmd+shift+o"
+# [triggers.action]
+# type = "applescript"
+# source = 'display notification "OpentouchBar" with title "trigger"'
