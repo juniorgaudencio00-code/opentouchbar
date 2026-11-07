@@ -39,11 +39,19 @@ final class HotkeyEngine {
             return
         }
 
+        var seen: [String: Int] = [:]
         for (i, trigger) in triggers.enumerated() {
             guard let (mods, key) = Self.parse(trigger.hotkey) else {
                 NSLog("OpentouchBar: hotkey inválida no TOML: \(trigger.hotkey)")
                 continue
             }
+            // Duplicata no próprio TOML daria -9878 (eventHotKeyExistsErr) e pareceria outro app.
+            let combo = "\(mods)/\(key)"
+            if let first = seen[combo] {
+                NSLog("OpentouchBar: hotkey \(trigger.hotkey) duplicada no TOML (trigger #\(i) repete o #\(first)); só o primeiro vale")
+                continue
+            }
+            seen[combo] = i
             var ref: EventHotKeyRef?
             let hkID = EventHotKeyID(signature: OSType(0x4F544200), id: UInt32(i))  // "OTB"
             let reg = RegisterEventHotKey(key, mods, hkID, GetApplicationEventTarget(), 0, &ref)
