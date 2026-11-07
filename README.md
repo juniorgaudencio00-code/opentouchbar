@@ -87,8 +87,9 @@ log) — o agente aperta botões de verdade.
 
 ## Roadmap
 
-- **v0.2**: triggers de hotkey (Carbon RegisterEventHotKey), editor visual mínimo, atalhos globais
-- **v0.3**: helpers fora de processo para scripts (modelo XPC), widgets, hooks de foco de app
+- **v0.2 ✅**: hotkeys globais (Carbon), menu com triggers/launch-at-login/editar config
+- **v0.3 ✅**: editor visual (SwiftUI) escrevendo o mesmo TOML, TOMLWriter com round-trip testado
+- **v0.4**: helpers fora de processo para scripts longos (modelo XPC), widgets, hooks de foco de app
 - **fase 2**: sync entre máquinas, plugin SDK, gestos de trackpad
 
 ## Licença
